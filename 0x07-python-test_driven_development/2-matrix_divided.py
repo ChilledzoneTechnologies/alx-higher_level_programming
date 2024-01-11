@@ -1,24 +1,28 @@
 #!/usr/bin/python3
-"""Function div matrix"""
-
+"""Define a matrix-divide function."""s
 
 def matrix_divided(matrix, div):
-    """function that divides all elements of a matrix."""
-    if matrix:
-        new_matrix = []
-        for row in matrix:
-            if div == 0:
-                raise ZeroDivisionError('division by zero')
-            elif type(div) not in (int, float):
-                raise TypeError('div must be a number')
-            else:
-                new_matrix.append([round((n / div), 2) for n in row])
-                return new_matrix
+    """Divides all elements of a matrix by a number
 
-    for row in matrix:
-        if type(matrix) not in (int, float):
-            raise TypeError
-            ('matrix must be a matrix (list of lists) of integers/floats')
-        elif len(matrix) > matrix[row]:
-            raise TypeError
-            ('Each row of the matrix must have the same size')
+    Args:
+        matrix (list): The matrix to be divided
+        div (int or float): The quotient of the matrix
+    """
+    if (not isinstance(matrix, list) or matrix == [] or
+            not all(isinstance(row, list) for row in matrix) or
+            not all((isinstance(ele, int) or isinstance(ele, float))
+                    for ele in [num for row in matrix for num in row])):
+        raise TypeError("matrix must be a matrix (list of lists) of "
+                        "integers/floats")
+    if not all(len(row) == len(matrix[0]) for row in matrix[1:]):
+        raise TypeError("Each row of the matrix must have the same size")
+    if not isinstance(div, (float, int)):
+        raise TypeError("div must be a number")
+    if div == 0:
+        raise ZeroDivisionError("division by zero")
+    newMatrix = []
+    for i in range(len(matrix)):
+        newMatrix.append([])
+        for col in matrix[i]:
+            newMatrix[i].append(round(col / div, 2))
+    return newMatrix
